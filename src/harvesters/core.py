@@ -68,7 +68,10 @@ from harvesters.util.pfnc import uint16_formats, uint32_formats, \
 from harvesters.util.pfnc import component_2d_formats
 from harvesters.util.pfnc import lmn_444_location_formats, \
     lmno_4444_location_formats, lmn_422_location_formats, \
-    lmn_411_location_formats, mono_location_formats, bayer_location_formats
+    lmn_411_location_formats, mono_location_formats, \
+    bayer_location_formats, bayer_packed_location_formats
+from harvesters.util.pfnc import bayer_packed_10_bit_formats, \
+    bayer_packed_12_bit_formats, bayer_packed_p, bayer_packed_packed
 
 
 _is_logging_buffer_manipulation = True if 'HARVESTERS_LOG_BUFFER_MANIPULATION' in os.environ else False
@@ -947,13 +950,13 @@ class Component2DImage(ComponentBase):
         )
 
         if symbolic in bayer_packed_p:
-            self._data = self._unpack_12_bit(self._data)
+            self._data = self._unpack_12_bit_p(self._data)
 
     def _unpack_12_bit_p(self, data):
-        fst_uint8, mid_uint8, lst_uint8 = np.reshape(data, (data.shape[0] // 3, 3)).astype(np.uint16).T
-        fst_uint12 = (fst_uint8 << 4) + (mid_uint8 >> 4)
-        snd_uint12 = ((mid_uint8 % 16) << 8) + lst_uint8
-        return np.reshape(np.concatenate((fst_uint12[:, None], snd_uint12[:, None]), axis=1), 2 * fst_uint12.shape[0])
+        fst_uint8, mid_uint8, lst_uint8 = numpy.reshape(data, (data.shape[0] // 3, 3)).astype(numpy.uint16).T
+        fst_uint12 = ((mid_uint8 % 16) << 8) + fst_uint8
+        snd_uint12 = (lst_uint8 << 4) + (mid_uint8 >> 4)
+        return numpy.reshape(numpy.concatenate((fst_uint12[:, None], snd_uint12[:, None]), axis=1), 2 * fst_uint12.shape[0])
 
 
     def represent_pixel_location(self) -> Optional[numpy.ndarray]:

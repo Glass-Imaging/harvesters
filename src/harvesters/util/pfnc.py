@@ -375,6 +375,16 @@ uint8_formats = [
     #
     'Confidence1',
     'Confidence8',
+    # Treat 12 bitpacked formats as 8 bit, unpack later
+    'BayerGR12Packed',
+    'BayerRG12Packed',
+    'BayerGB12Packed',
+    'BayerBG12Packed',
+    'BayerBG12p',
+    'BayerGB12p',
+    'BayerGR12p',
+    'BayerRG12p',
+
 ]
 
 uint16_formats = [
