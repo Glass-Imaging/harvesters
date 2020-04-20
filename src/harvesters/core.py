@@ -879,12 +879,24 @@ class Component2DImage(ComponentBase):
         elif symbolic in lmno_4444_location_formats:
             num_components_per_pixel = 4.
         elif symbolic in mono_location_formats or \
-                symbolic in bayer_location_formats:
+                symbolic in bayer_location_formats or \
+                symbolic in bayer_packed_location_formats:
             num_components_per_pixel = 1.
         else:
             # Sorry, Harvester can't handle this:
             self._data = None
             return
+
+        if symbolic in bayer_packed_location_formats and \
+                symbolic in bayer_packed_12_bit_formats:
+                bytes_per_pixel = 1.5
+        elif symbolic in bayer_packed_location_formats and \
+                symbolic in bayer_packed_10_bit_formats:
+                # Sorry, Harvester can't handle this:
+                self._data = None
+                return
+        else:
+            bytes_per_pixel = 1
 
         self._num_components_per_pixel = num_components_per_pixel
         self._symbolic = symbolic
@@ -901,6 +913,7 @@ class Component2DImage(ComponentBase):
         else:
             count = width * height
             count *= num_components_per_pixel
+            count *= bytes_per_pixel
             count += self.y_padding
             data_offset = 0
 
@@ -932,6 +945,16 @@ class Component2DImage(ComponentBase):
             dtype=dtype,
             offset=data_offset
         )
+
+        if symbolic in bayer_packed_p:
+            self._data = self._unpack_12_bit(self._data)
+
+    def _unpack_12_bit_p(self, data):
+        fst_uint8, mid_uint8, lst_uint8 = np.reshape(data, (data.shape[0] // 3, 3)).astype(np.uint16).T
+        fst_uint12 = (fst_uint8 << 4) + (mid_uint8 >> 4)
+        snd_uint12 = ((mid_uint8 % 16) << 8) + lst_uint8
+        return np.reshape(np.concatenate((fst_uint12[:, None], snd_uint12[:, None]), axis=1), 2 * fst_uint12.shape[0])
+
 
     def represent_pixel_location(self) -> Optional[numpy.ndarray]:
         """

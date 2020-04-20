@@ -305,6 +305,50 @@ bayer_packed_location_formats = [
     'BayerRG12p',
 ]
 
+bayer_packed_12_bit_formats = [
+    'BayerGR12Packed',
+    'BayerRG12Packed',
+    'BayerGB12Packed',
+    'BayerBG12Packed',
+    'BayerBG12p',
+    'BayerGB12p',
+    'BayerGR12p',
+    'BayerRG12p',
+]
+
+bayer_packed_10_bit_formats = [
+    'BayerGR10Packed',
+    'BayerRG10Packed',
+    'BayerGB10Packed',
+    'BayerBG10Packed',
+    'BayerBG10p',
+    'BayerGB10p',
+    'BayerGR10p',
+    'BayerRG10p',
+]
+
+bayer_packed_p = [
+    'BayerBG10p',
+    'BayerBG12p',
+    'BayerGB10p',
+    'BayerGB12p',
+    'BayerGR10p',
+    'BayerGR12p',
+    'BayerRG10p',
+    'BayerRG12p',
+]
+
+bayer_packed_packed = [
+    'BayerGR10Packed',
+    'BayerRG10Packed',
+    'BayerGB10Packed',
+    'BayerBG10Packed',
+    'BayerGR12Packed',
+    'BayerRG12Packed',
+    'BayerGB12Packed',
+    'BayerBG12Packed',
+]
+
 uint8_formats = [
     #
     'Mono8',
@@ -559,10 +603,30 @@ component_2d_formats = [
     'BayerRG10',
     'BayerBG10',
     #
+    'BayerGR10p',
+    'BayerGB10p',
+    'BayerRG10p',
+    'BayerBG10p',
+    #
+    'BayerGR10Packed',
+    'BayerGB10Packed',
+    'BayerRG10Packed',
+    'BayerBG10Packed',
+    #
     'BayerGR12',
     'BayerGB12',
     'BayerRG12',
     'BayerBG12',
+    #
+    'BayerGR12p',
+    'BayerGB12p',
+    'BayerRG12p',
+    'BayerBG12p',
+    #
+    'BayerGR12Packed',
+    'BayerGB12Packed',
+    'BayerRG12Packed',
+    'BayerBG12Packed',
     #
     'BayerGR16',
     'BayerRG16',
